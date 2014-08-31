@@ -23,7 +23,13 @@ def ical_from_eb_feed( eb_feed ):
 
         organiser = event['event']['organizer']['name']
         venue = event['event']['venue']
-        venue_address = ', '.join( [ venue['name'], venue['address'], venue['address_2'], venue['city'], venue['region'], venue['postal_code'], venue['country'], ] )
+
+        addresses = [ venue['name'], venue['address'], venue['address_2'], venue['city'], venue['region'], venue['postal_code'], venue['country'], ]
+        filled_addresses = []
+        for a in addresses:
+            if a: filled_addresses.append( a )
+
+        venue_address = ', '.join( filled_addresses )
         latitude = venue['latitude']
         longitude = venue['longitude']
 
@@ -33,7 +39,11 @@ def ical_from_eb_feed( eb_feed ):
       
         entry = Event()
         entry.add( 'summary', title )
-        entry.add( 'description', '\n\n'.join( [ description, url, ] ) )
+
+        if url:
+            description = '%s\n\n%s' % ( description, url )
+
+        entry.add( 'description', description )
         entry.add( 'dtstart', start_date )
         entry.add( 'dtend',  end_date )
         entry.add( 'dtstamp', created )
