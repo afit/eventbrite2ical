@@ -20,8 +20,6 @@ Or, for just this version
 
     pip install git+https://github.com/reincubate/eventbrite2ical#eventbrite2ical==0.1
 
-https://github.com/reincubate/eventbrite2ical
-
 ###Loading the eventbrite2ical code###
 
     from eventbrite2ical import eventbrite2ical
