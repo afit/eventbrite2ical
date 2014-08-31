@@ -8,13 +8,16 @@ def fetch_eb_organizer_feed( credentials, event_args ):
     eb_client = EventbriteClient( credentials )
     return eb_client.organizer_list_events( event_args )
 
-def ical_from_eb_feed( eb_feed ):
+def ical_from_eb_feed( eb_feed, ignore_draft=True ):
     ''' Converts an EventBrite feed into iCal format. '''
     cal = Calendar()
     cal.add('prodid', '-//eventbrite2ical//reincubate//')
     cal.add('version', '2.0')
 
     for event in eb_feed['events']:
+        if ignore_draft and event['event']['status'] == 'Draft':
+            continue
+
         tzinfo = timezone( event['event']['timezone'] )
 
         title = event['event']['title']
