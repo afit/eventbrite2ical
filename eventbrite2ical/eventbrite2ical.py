@@ -22,16 +22,20 @@ def ical_from_eb_feed( eb_feed ):
         url = event['event']['url']
 
         organiser = event['event']['organizer']['name']
-        venue = event['event']['venue']
 
-        addresses = [ venue['name'], venue['address'], venue['address_2'], venue['city'], venue['region'], venue['postal_code'], venue['country'], ]
-        filled_addresses = []
-        for a in addresses:
-            if a: filled_addresses.append( a )
+        if not 'venue' in event['event']:
+            venue = None
+        else:
+            venue = event['event']['venue']
 
-        venue_address = ', '.join( filled_addresses )
-        latitude = venue['latitude']
-        longitude = venue['longitude']
+            addresses = [ venue['name'], venue['address'], venue['address_2'], venue['city'], venue['region'], venue['postal_code'], venue['country'], ]
+            filled_addresses = []
+            for a in addresses:
+                if a: filled_addresses.append( a )
+
+            venue_address = ', '.join( filled_addresses )
+            latitude = venue['latitude']
+            longitude = venue['longitude']
 
         start_date = datetime.strptime( event['event']['start_date'], '%Y-%m-%d %H:%M:%S' ).replace(tzinfo=tzinfo)
         end_date = datetime.strptime( event['event']['end_date'], '%Y-%m-%d %H:%M:%S' ).replace(tzinfo=tzinfo)
@@ -47,9 +51,11 @@ def ical_from_eb_feed( eb_feed ):
         entry.add( 'dtstart', start_date )
         entry.add( 'dtend',  end_date )
         entry.add( 'dtstamp', created )
-        entry.add( 'location', venue_address )
-        entry.add( 'geoLat', latitude )
-        entry.add( 'geoLong', longitude )
+
+        if venue:
+            entry.add( 'location', venue_address )
+            entry.add( 'geoLat', latitude )
+            entry.add( 'geoLong', longitude )
 
         eorganiser = vCalAddress( url )
         eorganiser.params['cn'] = organiser
