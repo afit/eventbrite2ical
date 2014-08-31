@@ -1,21 +1,20 @@
-# This requires `pip install icalendar eventbrite pytz`. That's all.
-
 from datetime import datetime
 from icalendar import Calendar, Event, vCalAddress
 from eventbrite import EventbriteClient
 from pytz import timezone
 
-def get_ical( credentials, event_args ):
-    # See https://github.com/collective/icalendar/blob/master/docs/usage.rst
+def fetch_eb_organizer_feed( credentials, event_args ):
+    ''' Pulls down a feed of events for an EventBrite organizer. '''
+    eb_client = EventbriteClient( credentials )
+    return eb_client.organizer_list_events( event_args )
+
+def ical_from_eb_feed( eb_feed ):
+    ''' Converts an EventBrite feed into iCal format. '''
     cal = Calendar()
-    cal.add('prodid', '-//Eventbrite2iCal//reincubate.com//')
+    cal.add('prodid', '-//eventbrite2ical//reincubate//')
     cal.add('version', '2.0')
 
-    # Pull the feed down from Eventbrite
-    eb_client = EventbriteClient( credentials )
-    eb_reponse = eb_client.organizer_list_events( event_args )
-
-    for event in eb_reponse['events']:
+    for event in eb_feed['events']:
         tzinfo = timezone( event['event']['timezone'] )
 
         title = event['event']['title']
@@ -49,6 +48,3 @@ def get_ical( credentials, event_args ):
         cal.add_component( entry )
 
     return cal.to_ical()
-
-# See https://github.com/eventbrite/eventbrite-client-py, set 'id' to your organizer ID.
-print get_ical( { 'app_key': 'YOUR_APP_KEY', }, { 'id': 0, 'event_statuses': 'live,started' }, )
