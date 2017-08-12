@@ -6,7 +6,7 @@ Python library to create an iCal feed from an EventBrite account on the fly.
 
 For the latest updates, look at:
 
-* [This project's home on GitHub](https://github.com/reincubate/eventbrite2ical/)
+* [This project's home on GitHub](https://github.com/afit/eventbrite2ical/)
 
 ## Usage
 
@@ -14,11 +14,11 @@ For the latest updates, look at:
 
 #### Installation using pip
 
-    pip install git+https://github.com/reincubate/eventbrite2ical
+    pip install git+https://github.com/afit/eventbrite2ical
 
 Or, for just this version
 
-    pip install git+https://github.com/reincubate/eventbrite2ical#eventbrite2ical==0.1
+    pip install git+https://github.com/afit/eventbrite2ical#eventbrite2ical==0.1
 
 ### Loading the eventbrite2ical code
 
