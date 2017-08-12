@@ -8,7 +8,7 @@ For the latest updates, look at:
 
 * [This project's home on GitHub](https://github.com/reincubate/eventbrite2ical/)
 
-## Usage##
+## Usage
 
 ### Installation
 
